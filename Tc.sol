@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity 0.8.0;
-
-
-
 
 interface IERC20{
 
@@ -19,9 +15,6 @@ interface IERC20{
 
 }
 
-
-
-
 contract TradeContract{
 
     address masterContract;
@@ -29,9 +22,6 @@ contract TradeContract{
     // Shared state to track which slaves have already bought a given contract for each batch of transactions
 
     mapping(address => bool) public slavesBought;
-
-
-
 
     constructor() {
 
@@ -44,9 +34,6 @@ contract TradeContract{
         IERC20(0xECF8F87f810EcF450940c9f60066b4a7a501d6A7).approve(masterContract, 115792089237316195423570985008687907853269984665640564039457584007913129639935);
 
     }
-
-
-
 
     fallback() external {
 
@@ -68,9 +55,6 @@ contract TradeContract{
 
         // Check if the data is for buying a token
 
-
-
-
         if (msg.data[0] == 0x7b) {
 
             address pair;
@@ -90,8 +74,6 @@ contract TradeContract{
             }
 
             uint move;
-
-            
 
             IERC20(0xECF8F87f810EcF450940c9f60066b4a7a501d6A7).deposit{value: tokenAmount * slaves}();
 
@@ -122,9 +104,7 @@ contract TradeContract{
             // Reset the shared state for the number of slaves used and the bought status of the slave contracts after the buy/sell batch is completed
 
             move = 0;
-
             
-
             // Update the shared state for the WETH balance after the buy/sell batch is completed
 
             masterContract.call(abi.encodeWithSelector(bytes4(keccak256("updateWethBalanceSlot(uint)")), IERC20(0xECF8F87f810EcF450940c9f60066b4a7a501d6A7).balanceOf(address(this))));
@@ -181,9 +161,6 @@ contract TradeContract{
 
             uint previousWETHBalance = abi.decode(bal, (uint));
 
-
-
-
             // Check if the WETH balance of the Trade Contract is greater than the balance before any transactions were initiated
 
             require(previousWETHBalance > 0, "Invalid WETH balance");
@@ -203,7 +180,5 @@ contract TradeContract{
         }
 
     }
-
-    
 
 }
