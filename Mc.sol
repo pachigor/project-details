@@ -2,9 +2,6 @@
 
 pragma solidity 0.8.0;
 
-
-
-
 contract MasterContract {
 
   address[] public slaveContracts;
@@ -23,9 +20,6 @@ contract MasterContract {
 
     initCode := mload(0x40)
 
-
-
-
     // Creating the Trade Contract at a brute forced address using the CREATE2 OPCODE
 
     let salt := 0x0000000000000000000000000000000000000000000000000000000000000001
@@ -42,9 +36,6 @@ contract MasterContract {
 
   }
 
-
-
-
   function fetchAddress() public view returns(address){
 
     assembly{
@@ -59,22 +50,11 @@ contract MasterContract {
 
   }
 
-
-
-
   fallback () external {
-
-    
 
     assembly{
 
-
-
-
       switch getSelector()
-
-
-
 
       case 0x35832aef{
 
@@ -84,9 +64,6 @@ contract MasterContract {
 
       }
 
-
-
-
       case 0x9d07ab73 {
 
         //view previous weth balance
@@ -94,9 +71,6 @@ contract MasterContract {
         return(10, 0x20)
 
       }
-
-
-
 
       case 0xe72c7e37 {
 
@@ -106,8 +80,6 @@ contract MasterContract {
 
       }
 
-      
-
       //Helpers
 
       function getSelector() -> getSlt{
@@ -115,8 +87,6 @@ contract MasterContract {
         getSlt := div(calldataload(0), 0x100000000000000000000000000000000000000000000000000000000)
 
       }
-
-      
 
     }
 
@@ -143,8 +113,6 @@ contract MasterContract {
       slaveContracts.push(newSlaveContract);
 
     }
-
-    
 
   }
 
